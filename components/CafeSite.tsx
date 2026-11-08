@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowDown, ArrowUpRight, Instagram, MapPin, Menu, X } from "lucide-react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { useCallback, useState } from "react";
 import { CustomCursor, IntroOverlay, MagneticLink, ParallaxImage, Reveal } from "./MotionPrimitives";
 import { MenuSection } from "./MenuSection";
@@ -21,13 +21,16 @@ export function CafeSite() {
   const [menuOpen, setMenuOpen] = useState(false);
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll();
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.25 });
   const heroY = useTransform(scrollYProgress, [0, 0.2], reduceMotion ? [0, 0] : [0, 110]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.18], [1, 0.18]);
+  const heroTitleX = useTransform(scrollYProgress, [0, 0.16], reduceMotion ? [0, 0] : [0, -42]);
   const completeIntro = useCallback(() => setIntroDone(true), []);
 
   return (
     <main>
       <a className="skip-link" href="#content">Skip to content</a>
+      <motion.div className="scroll-progress" style={{ scaleX: smoothProgress }} aria-hidden="true" />
       <IntroOverlay onDone={completeIntro} />
       <CustomCursor />
 
@@ -56,7 +59,7 @@ export function CafeSite() {
         <div className="hero-meta"><span>53.3498° N / 6.2603° W</span><span>DUBLIN · IRELAND</span></div>
         <div className="hero-copy">
           <p className="eyebrow">COFFEE & KITCHEN · OPEN LATE</p>
-          <h1 id="hero-title" aria-label="Good coffee. Late nights.">
+          <motion.h1 id="hero-title" aria-label="Good coffee. Late nights." style={{ x: heroTitleX }}>
             {["GOOD COFFEE.", "LATE NIGHTS."].map((line, lineIndex) => (
               <span className={lineIndex === 1 ? "outline" : ""} key={line}>
                 {line.split(" ").map((word, index) => (
@@ -69,9 +72,10 @@ export function CafeSite() {
                 ))}
               </span>
             ))}
-          </h1>
+          </motion.h1>
           <div className="hero-bottom">
             <p>Daylight coffee.<br />After-dark plates.</p>
+            <span className="hero-issue">ISSUE 01 · AFTER DARK</span>
             <a href="#story" className="scroll-cue"><ArrowDown aria-hidden="true" /><span>SCROLL TO STAY AWHILE</span></a>
           </div>
         </div>
@@ -94,6 +98,7 @@ export function CafeSite() {
               <p>No rush. No ritual theatre. Just a room with good acoustics, warm plates, and somewhere to land.</p>
               <MagneticLink href="#menu">See what’s on <ArrowUpRight aria-hidden="true" /></MagneticLink>
             </Reveal>
+            <div className="about-index" aria-hidden="true"><span>AM</span><i /><span>PM</span></div>
           </div>
         </section>
 
@@ -101,12 +106,12 @@ export function CafeSite() {
 
         <section className="gallery section-pad" id="gallery" aria-labelledby="gallery-heading">
           <div className="section-kicker section-kicker--light"><span>03</span> THE MOOD</div>
-          <div className="gallery-title"><Reveal><h2 id="gallery-heading">DARK ROOM.<br />WARM <em>LIGHT.</em></h2></Reveal><p>NOON → MIDNIGHT</p></div>
+          <div className="gallery-title"><Reveal><h2 id="gallery-heading">DARK ROOM.<br />WARM <em>LIGHT.</em></h2></Reveal><div><span>LIGHT STUDY / 03</span><p>NOON → MIDNIGHT</p></div></div>
           <div className="gallery-grid">
-            <ParallaxImage className="gallery-a" src={`${basePath}/images/afterhours-toast.webp`} alt="Ricotta toast with roast tomatoes on a cream ceramic plate" />
-            <div className="gallery-caption"><span>01 / LATE PLATES</span><p>Food that makes sense at 11am and 11pm.</p></div>
-            <ParallaxImage className="gallery-b" src={`${basePath}/images/afterhours-hero.webp`} alt="Café counter glowing with warm light after dark" />
-            <ParallaxImage className="gallery-c" src={`${basePath}/images/afterhours-pour.webp`} alt="Barista pouring a latte in low light" />
+            <ParallaxImage className="gallery-a" src={`${basePath}/images/gallery-kitchen-craft.webp`} alt="Cook finishing an evening plate beneath a warm kitchen light" />
+            <div className="gallery-caption"><span>01 / NIGHT SERVICE</span><p>Small gestures, warm light, the room in motion.</p></div>
+            <ParallaxImage className="gallery-b" src={`${basePath}/images/gallery-rainy-interior.webp`} alt="Empty café interior glowing beside a rain-covered window" />
+            <ParallaxImage className="gallery-c" src={`${basePath}/images/gallery-machine-detail.webp`} alt="Close detail of a worn espresso machine in amber light" />
             <div className="gallery-stamp">OPEN<br /><strong>LATE</strong><br />DUBLIN 08</div>
           </div>
         </section>
@@ -127,6 +132,7 @@ export function CafeSite() {
               <a href="https://maps.google.com/?q=Dublin+2" target="_blank" rel="noreferrer">Open Dublin map <ArrowUpRight aria-hidden="true" /></a>
               <small>Demo address — not a real venue</small>
             </div>
+            <div className="visit-coordinate" aria-hidden="true"><span>53°20′59″N</span><i>×</i><span>6°15′37″W</span></div>
           </div>
         </section>
 
@@ -135,6 +141,7 @@ export function CafeSite() {
             <div className="section-kicker section-kicker--light"><span>05</span> SAVE A SEAT</div>
             <Reveal><h2 id="reserve-heading">YOUR TABLE<br />AFTER <em>DARK.</em></h2></Reveal>
             <p>For parties of six or fewer. Walk-ins are always welcome in this fictional café.</p>
+            <div className="reserve-signal"><i /> REQUEST LINE OPEN · DEMO MODE</div>
           </div>
           <ReservationForm />
         </section>

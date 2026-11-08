@@ -129,13 +129,15 @@ export function MagneticLink({ href, children, className = "" }: { href: string;
 }
 
 export function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 50 }}
+      initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 50, clipPath: "inset(0 0 8% 0)" }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 0.85, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: reduceMotion ? 0.1 : 0.85, delay: reduceMotion ? 0 : delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>
@@ -152,10 +154,10 @@ export function ParallaxImage({ src, alt, className = "", priority = false }: { 
     <motion.div
       ref={ref}
       className={`image-mask ${className}`}
-      initial={{ clipPath: "inset(0 0 100% 0)" }}
+      initial={reduceMotion ? false : { clipPath: "inset(0 0 100% 0)" }}
       whileInView={{ clipPath: "inset(0 0 0% 0)" }}
       viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 1.15, ease: [0.76, 0, 0.24, 1] }}
+      transition={{ duration: reduceMotion ? 0.1 : 1.15, ease: [0.76, 0, 0.24, 1] }}
     >
       <motion.div className="parallax-inner" style={{ y }}>
         <Image src={src} alt={alt} fill sizes="(max-width: 768px) 100vw, 60vw" priority={priority} />
