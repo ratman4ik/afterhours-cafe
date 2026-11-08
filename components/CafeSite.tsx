@@ -14,6 +14,8 @@ const navItems = [
   ["Visit", "#visit"],
 ] as const;
 
+const basePath = process.env.NODE_ENV === "production" ? "/afterhours-cafe" : "";
+
 export function CafeSite() {
   const [introDone, setIntroDone] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -48,7 +50,7 @@ export function CafeSite() {
 
       <section className="hero" id="top" aria-labelledby="hero-title">
         <motion.div className="hero-media" style={{ y: heroY, opacity: heroOpacity }}>
-          <ParallaxImage src="/images/afterhours-hero.webp" alt="Espresso on a dark wooden counter in a warmly lit café" priority />
+          <ParallaxImage src={`${basePath}/images/afterhours-hero.webp`} alt="Espresso on a dark wooden counter in a warmly lit café" priority />
         </motion.div>
         <div className="hero-vignette" />
         <div className="hero-meta"><span>53.3498° N / 6.2603° W</span><span>DUBLIN · IRELAND</span></div>
@@ -85,7 +87,7 @@ export function CafeSite() {
             <h2 id="story-heading">BUILT FOR THE HOURS <em>BETWEEN</em> ONE THING AND THE NEXT.</h2>
           </Reveal>
           <div className="about-grid">
-            <Reveal className="about-image"><ParallaxImage src="/images/afterhours-pour.webp" alt="Milk being poured into espresso in a handmade ceramic cup" /></Reveal>
+            <Reveal className="about-image"><ParallaxImage src={`${basePath}/images/afterhours-pour.webp`} alt="Milk being poured into espresso in a handmade ceramic cup" /></Reveal>
             <Reveal className="about-copy" delay={0.12}>
               <span>( ABOUT AFTERHOURS )</span>
               <p>AFTERHOURS is a fictional Dublin café concept for early risers, night thinkers and everyone in the middle. We pull careful coffee all day, then turn the lights low and the kitchen up.</p>
@@ -101,10 +103,10 @@ export function CafeSite() {
           <div className="section-kicker section-kicker--light"><span>03</span> THE MOOD</div>
           <div className="gallery-title"><Reveal><h2 id="gallery-heading">DARK ROOM.<br />WARM <em>LIGHT.</em></h2></Reveal><p>NOON → MIDNIGHT</p></div>
           <div className="gallery-grid">
-            <ParallaxImage className="gallery-a" src="/images/afterhours-toast.webp" alt="Ricotta toast with roast tomatoes on a cream ceramic plate" />
+            <ParallaxImage className="gallery-a" src={`${basePath}/images/afterhours-toast.webp`} alt="Ricotta toast with roast tomatoes on a cream ceramic plate" />
             <div className="gallery-caption"><span>01 / LATE PLATES</span><p>Food that makes sense at 11am and 11pm.</p></div>
-            <ParallaxImage className="gallery-b" src="/images/afterhours-hero.webp" alt="Café counter glowing with warm light after dark" />
-            <ParallaxImage className="gallery-c" src="/images/afterhours-pour.webp" alt="Barista pouring a latte in low light" />
+            <ParallaxImage className="gallery-b" src={`${basePath}/images/afterhours-hero.webp`} alt="Café counter glowing with warm light after dark" />
+            <ParallaxImage className="gallery-c" src={`${basePath}/images/afterhours-pour.webp`} alt="Barista pouring a latte in low light" />
             <div className="gallery-stamp">OPEN<br /><strong>LATE</strong><br />DUBLIN 08</div>
           </div>
         </section>
