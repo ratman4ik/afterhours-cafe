@@ -82,7 +82,15 @@ export function CafeSite() {
       </section>
 
       <div id="content">
-        <section className="marquee" aria-hidden="true"><div>COFFEE / KITCHEN / NIGHT SHIFT / DUBLIN /&nbsp;</div><div>COFFEE / KITCHEN / NIGHT SHIFT / DUBLIN /&nbsp;</div></section>
+        <section className="marquee" aria-hidden="true">
+          <div className="marquee__track">
+            {[0, 1].map((group) => (
+              <div className="marquee__group" key={group}>
+                {[0, 1, 2].map((item) => <span key={item}>COFFEE / KITCHEN / NIGHT SHIFT / DUBLIN /</span>)}
+              </div>
+            ))}
+          </div>
+        </section>
 
         <section className="about section-pad" id="story" aria-labelledby="story-heading">
           <div className="section-kicker"><span>01</span> OUR FREQUENCY</div>
@@ -106,13 +114,23 @@ export function CafeSite() {
 
         <section className="gallery section-pad" id="gallery" aria-labelledby="gallery-heading">
           <div className="section-kicker section-kicker--light"><span>03</span> THE MOOD</div>
-          <div className="gallery-title"><Reveal><h2 id="gallery-heading">DARK ROOM.<br />WARM <em>LIGHT.</em></h2></Reveal><div><span>LIGHT STUDY / 03</span><p>NOON → MIDNIGHT</p></div></div>
-          <div className="gallery-grid">
-            <ParallaxImage className="gallery-a" src={`${basePath}/images/gallery-kitchen-craft.webp`} alt="Cook finishing an evening plate beneath a warm kitchen light" />
-            <div className="gallery-caption"><span>01 / NIGHT SERVICE</span><p>Small gestures, warm light, the room in motion.</p></div>
-            <ParallaxImage className="gallery-b" src={`${basePath}/images/gallery-rainy-interior.webp`} alt="Empty café interior glowing beside a rain-covered window" />
-            <ParallaxImage className="gallery-c" src={`${basePath}/images/gallery-machine-detail.webp`} alt="Close detail of a worn espresso machine in amber light" />
-            <div className="gallery-stamp">OPEN<br /><strong>LATE</strong><br />DUBLIN 08</div>
+          <div className="gallery-lead">
+            <div className="gallery-editorial">
+              <div className="gallery-title">
+                <Reveal><h2 id="gallery-heading">DARK ROOM.<br />WARM <em>LIGHT.</em></h2></Reveal>
+                <div className="gallery-title__meta"><span>LIGHT STUDY / 03</span><p>NOON → MIDNIGHT</p></div>
+              </div>
+              <div className="gallery-notes">
+                <div className="gallery-caption"><span>01 / NIGHT SERVICE</span><p>Small gestures, warm light, the room in motion.</p></div>
+                <div className="gallery-stamp" aria-hidden="true">OPEN<br /><strong>LATE</strong><br />DUBLIN 08</div>
+              </div>
+            </div>
+            <ParallaxImage className="gallery-a" src={`${basePath}/images/gallery-kitchen-craft.webp`} alt="Cook finishing an evening plate beneath a warm kitchen light" maskReveal={false} />
+          </div>
+          <div className="gallery-secondary">
+            <ParallaxImage className="gallery-b" src={`${basePath}/images/gallery-rainy-interior.webp`} alt="Empty café interior glowing beside a rain-covered window" maskReveal={false} />
+            <div className="gallery-secondary__index" aria-hidden="true"><span>FRAME 02</span><i /><span>FRAME 03</span></div>
+            <ParallaxImage className="gallery-c" src={`${basePath}/images/gallery-machine-detail.webp`} alt="Close detail of a worn espresso machine in amber light" maskReveal={false} />
           </div>
         </section>
 

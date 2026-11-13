@@ -135,7 +135,7 @@ export function Reveal({ children, className = "", delay = 0 }: { children: Reac
     <motion.div
       className={className}
       initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 50, clipPath: "inset(0 0 8% 0)" }}
-      whileInView={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)" }}
       viewport={{ once: true, margin: "-10%" }}
       transition={{ duration: reduceMotion ? 0.1 : 0.85, delay: reduceMotion ? 0 : delay, ease: [0.22, 1, 0.36, 1] }}
     >
@@ -144,18 +144,31 @@ export function Reveal({ children, className = "", delay = 0 }: { children: Reac
   );
 }
 
-export function ParallaxImage({ src, alt, className = "", priority = false }: { src: string; alt: string; className?: string; priority?: boolean }) {
+export function ParallaxImage({
+  src,
+  alt,
+  className = "",
+  priority = false,
+  maskReveal = true,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  priority?: boolean;
+  maskReveal?: boolean;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], reduceMotion ? ["0%", "0%"] : ["-7%", "7%"]);
+  const parallaxRange: [string, string] = maskReveal ? ["-7%", "7%"] : ["-3%", "3%"];
+  const y = useTransform(scrollYProgress, [0, 1], reduceMotion ? ["0%", "0%"] : parallaxRange);
 
   return (
     <motion.div
       ref={ref}
       className={`image-mask ${className}`}
-      initial={reduceMotion ? false : { clipPath: "inset(0 0 100% 0)" }}
-      whileInView={{ clipPath: "inset(0 0 0% 0)" }}
+      initial={priority || reduceMotion || !maskReveal ? false : { clipPath: "inset(0 0 100% 0)" }}
+      whileInView={maskReveal ? { clipPath: "inset(0 0 0% 0)" } : undefined}
       viewport={{ once: true, margin: "-10%" }}
       transition={{ duration: reduceMotion ? 0.1 : 1.15, ease: [0.76, 0, 0.24, 1] }}
     >
